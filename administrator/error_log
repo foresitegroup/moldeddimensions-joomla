@@ -1,0 +1,2 @@
+[28-Apr-2014 14:14:04 America/Chicago] PHP Warning:  is_readable() [<a href='function.is-readable'>function.is-readable</a>]: open_basedir restriction in effect. File(/dev/urandom) is not within the allowed path(s): (/home:/tmp:/usr) in /home/remediho/public_html/moldeddimensions/libraries/phpass/PasswordHash.php on line 51
+[19-May-2014 11:13:20 America/Chicago] PHP Warning:  constant() [<a href='function.constant'>function.constant</a>]: Couldn't find constant JPATH_ in /home/remediho/public_html/moldeddimensions/libraries/cms/installer/adapter/module.php on line 127

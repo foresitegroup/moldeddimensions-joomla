@@ -1,0 +1,239 @@
+<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+
+include_once (dirname(__FILE__).'/functions.php');
+global $tpl;
+$tpl = new Joomla_Template($this);
+
+$app = JFactory::getApplication();
+$doc = JFactory::getDocument();
+
+$this->language = $doc->language;
+$this->direction = $doc->direction;
+
+$option   = $app->input->getCmd('option', '');
+$sitename = $app->getCfg('sitename');
+
+$doc->addStyleSheet('templates/'.$this->template.'/css/all.css');
+$doc->addStyleSheet('templates/'.$this->template.'/css/impl.css');
+
+if ($this->params->get('logoFile'))
+{
+	$logo = '<img src="'. JURI::root() . $this->params->get('logoFile') .'" alt="'. $sitename .'" />';
+}
+elseif ($this->params->get('sitetitle'))
+{
+	$logo = '<span class="site-title" title="'. $sitename .'">'. htmlspecialchars($this->params->get('sitetitle')) .'</span>';
+}
+else
+{
+	$logo = '<span class="site-title" title="'. $sitename .'">'. $sitename .'</span>';
+}
+// custom work
+
+$site_url = 'templates/' . $this->template;
+
+$home_page = false;
+$search = JRequest::getVar('searchword');
+$catid = JRequest::getVar('catid');
+$view = JRequest::getVar('view');
+if($tpl->is_home() && !((isset($search) && !empty($search)) or (isset($catid ) && !empty($catid)) or  ( isset($view ) && $view == 'category'))) $home_page = true;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="utf-8">
+    <script type="text/javascript">
+		var pathInfo = {
+			base: '<?php echo $site_url ?>/',
+			css: 'css/',
+			js: 'js/',
+			swf: 'swf/'
+		}
+	</script>
+	<jdoc:include type="head" />
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic,300italic,300,900,900italic' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="<?php echo $site_url; ?>/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="<?php echo $site_url; ?>/js/jquery.main.js"></script>
+  <script type="text/javascript" src="<?php echo $site_url; ?>/js/jquery.cycle2.min.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+	<!--[if IE 8]>
+		<link media="all" rel="stylesheet" href="<?php echo $site_url; ?>/css/ie.css">
+		<script type="text/javascript" src="<?php echo $site_url; ?>/js/ie.js"></script>
+	<![endif]-->
+  
+  <!-- BEGIN Google Analytics -->
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38271523-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <!-- END Google Analytics -->
+</head>
+<body <?php if($home_page != true) echo ' class="sub-page" ';?>>
+	<div id="wrapper">
+		<header id="header">
+			<h2 class="mobile-heading"><a href="<?php echo $this->baseurl; ?>">Home</a></h2>
+
+			<div class="header-holder">
+				<?php if($this->countModules('top')) : ?>
+          <div class="panel">
+					  <div class="panel-holder">
+              <jdoc:include type="modules" name="top" style="widget" />
+					  </div>
+				  </div>
+        <?php endif; ?>
+
+				<div class="header-frame">
+					<div class="logo-holder">
+						<strong class="logo"><a href="<?php echo $this->baseurl; ?>"><?php echo $logo;?></a></strong>
+
+						<?php if ($this->params->get('sitedescription')) { echo '<div class="slogan">'. htmlspecialchars($this->params->get('sitedescription')) .'</div>'; } ?>
+
+            <div class="slogan">
+							<strong>MOLDED DIMENSIONS INC.</strong>
+							<span>Custom Molder of Rubber and Cast Polyurethane Components.</span>
+						</div>
+					</div>
+          
+          <jdoc:include type="modules" name="search"  />
+				</div>
+        
+        <?php if($this->countModules('mainmenu')) : ?>
+  				<div class="nav-holder">
+  					<a href="#" class="opener">Menu</a>
+  					<div class="slide">
+  						<nav id="nav">
+                <jdoc:include type="modules" name="mainmenu"  />
+  						</nav>
+  					</div>
+  				</div>
+        <?php endif; ?>
+			</div>
+		</header>
+    
+    <?php if($this->countModules('banner') and $home_page == true) : ?>
+      <div class="promo">
+        <jdoc:include type="modules" name="banner"  />
+      </div>
+		<?php elseif(! (isset($view)  && $view == 'category')): ?>
+      <div class="promo">
+        <div class="promo-holder">
+          <h2>
+          <?php
+          $itemid = JRequest::getVar('Itemid');
+					$menu = &JSite::getMenu();
+					$active = $menu->getItem($itemid);
+					$parent_id = $active->parent_id;
+
+					echo $active->title;
+					?>
+          </h2>
+        </div>
+
+        <?php
+        $article =& JTable::getInstance("content");
+        $article->load(JRequest::getVar('id'));
+        $params  = $article->params;
+
+        $article_images = $article->images;
+        $obj = json_decode($article_images);
+        $thumbnails = $obj->{'image_fulltext'};
+        $image_intro_alt = $obj->{'image_fulltext'};
+        ?>
+
+        <?php if ($thumbnails ): ?>
+          <div class="bg-stretch">
+            <img src="<?php echo $thumbnails; ?>" alt="image"  alt="<?php echo $image_intro_alt; ?>" />
+          </div>
+        <?php endif; ?>
+      </div>
+    <?php endif; ?>
+
+		<div id="main">
+			<?php if($this->countModules('featured') and $home_page == true) : ?>
+        <jdoc:include type="modules" name="featured" />
+      <?php else: ?>
+        <div class="main-block">
+          <div id="content">
+            <jdoc:include type="message" />
+            <jdoc:include type="component" />
+            <div id="pe1"><jdoc:include type="modules" name="pe1" style="xhtml" /></div>
+            <div id="pe2"><jdoc:include type="modules" name="pe2" style="xhtml" /></div>
+          </div>
+          
+          <?php if($this->countModules('featured') and !(isset($view)  && $view == 'category')): ?>
+            <aside id="sidebar">
+              <jdoc:include type="modules" name="sidebar" style="widget"/>
+            </aside>
+          <?php endif;?>
+        </div>
+      <?php endif; ?>
+
+      <jdoc:include type="modules" name="knowledgecenter" />
+      
+      <?php if($this->countModules('bottom_red') and $home_page == true) : ?>
+			  <div class="nav-block">
+          <jdoc:include type="modules" name="bottom_red" style="widget" />
+			  </div>
+      <?php endif; ?>
+		</div>
+
+		<footer id="footer">
+			<div class="footer-holder">
+				<div class="footer-block">
+          <?php if($this->countModules('footer_form') or $this->countModules('footer_right') ) : ?>
+					  <div class="footer-box">
+						  <div class="holder">
+                <?php if($this->countModules('footer_form')) : ?>
+							    <div class="footer-search-form">
+                    <jdoc:include type="modules" name="footer_form" style="widget" />
+							    </div>
+							  <?php endif; ?>
+                
+                <?php if($this->countModules('footer_right')) : ?>
+							    <div class="download-box">
+                    <jdoc:include type="modules" name="footer_right" style="widget" />
+							    </div>
+                <?php endif; ?>
+						  </div>
+					  </div>
+          <?php endif; ?>
+          
+          <jdoc:include type="modules" name="footerheading" style="widget" />
+          
+          <?php if($this->countModules('footermenu')) : ?>
+					  <div class="columns">
+              <jdoc:include type="modules" name="footermenu" style="footer_menu" />
+					  </div>
+          <?php endif; ?>
+				</div>
+
+				<div class="footer-frame">
+          <jdoc:include type="modules" name="footer_bottom" style="widget" />
+				</div>
+			</div>
+
+      <!-- BEGIN WebTrax -->
+      <script type="text/javascript">
+        document.write(unescape("%3Cscript src='" + document.location.protocol + "//www.webtraxs.com/trxscript.php' type='text/javascript'%3E%3C/script%3E"));
+      </script>
+      <script type="text/javascript">
+        _trxid = "moldeddimensions";
+        webTraxs();
+      </script>
+      <noscript><img src="http://www.webtraxs.com/webtraxs.php?id=moldeddimensions&st=img" alt=""></noscript>
+      <!-- END WebTrax -->
+		</footer>
+
+		<a href="#wrapper" class="back-top">Back to top</a>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+.footer-search-form input[type="text"],
+.footer-search-form input[type="search"],
+.footer-search-form input[type="email"],
+.footer-search-form button[type="submit"]{filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#22272d', endColorstr='#252930',GradientType=0 );}
+.footer-search-form button[type="button"]{filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#495361', endColorstr='#373e49',GradientType=0 );}
+.footer-search-form button[type="button"]{min-width:73px;}
