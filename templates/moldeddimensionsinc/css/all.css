@@ -843,6 +843,16 @@ font-size:16px;
 	width:138px;
 	padding:0 18px 10px 0;
 }
+
+#footer .col:last-child {
+	width: auto;
+	padding: 0 0 10px 0;
+}
+
+#footer .footer-contact {
+	width: 80px;
+}
+
 #footer .col h3{
 	font:400 11px/14px 'lato', sans-serif;
 	color:#fff;
@@ -857,6 +867,11 @@ font-size:16px;
 	padding:8px 0 0;
 	list-style:none outside;
 }
+
+.sub-nav li.footer-invisible {
+	display: none;
+}
+
 .sub-nav li:first-child{padding-top:0;}
 .sub-nav a{text-decoration:none; color:#c5c5c5;}
 .sub-nav a:hover{text-decoration:underline;}
@@ -1340,10 +1355,17 @@ IMG.one-half-left {
 		margin:0;
 	}
 	.download-box .box-holder{float:right;}
-	#footer .columns{width:135%;}
+	/*#footer .columns{width:135%;}*/
+	#footer .columns{width:100%;}
 	#footer .col{
-		width:16.2%;
-		padding:0 0.1% 1% 0;
+/*		width:16.2%;
+		padding:0 0.1% 1% 0;*/
+		width: 17%;
+		padding: 0 0.9% 1% 0;
+	}
+	#footer .footer-contact {
+		width: auto;
+		padding-right: 2%;
 	}
 	.social-box.hidden{
 		display:block;

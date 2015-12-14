@@ -150,7 +150,11 @@ if($tpl->is_home() && !((isset($search) && !empty($search)) or (isset($catid ) &
 
         <?php if ($thumbnails ): ?>
           <div class="bg-stretch">
-            <img src="<?php echo $thumbnails; ?>" alt="image"  alt="<?php echo $image_intro_alt; ?>" />
+            <img src="<?php echo $thumbnails; ?>" alt="<?php echo $image_intro_alt; ?>" />
+          </div>
+        <?php else: ?>
+          <div class="bg-stretch">
+            <img src="images/header-news.jpg" alt="" style="max-width: none;" />
           </div>
         <?php endif; ?>
       </div>
