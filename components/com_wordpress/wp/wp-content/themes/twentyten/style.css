@@ -16,10 +16,6 @@ LAYOUT: Two columns
 DESCRIPTION: Two-column fixed layout with one sidebar right of content
 */
 
-#content {
-	width: 100%;
-}
-
 #wordpress {
 	overflow: hidden;
 }
@@ -102,10 +98,8 @@ div.menu,
 	/*width: 940px;*/
 }
 #wp-wrapper {
-	/*margin-top: 20px;
-	padding: 0 20px;*/
-	margin-top: 0;
-	padding: 0;
+	margin-top: 20px;
+	padding: 0 20px;
 }
 
 /* Structure the footer area */
@@ -1096,34 +1090,3 @@ code {
 }
 
 /* @end */
-
-@media only screen and (max-width: 768px) {
-  /* Tablet */
-  #wp-content {
-		margin: 0;
-	}
-
-  #primary,
-	#secondary {
-		float: none;
-		width: 100%;
-	}
-}
-
-@media only screen and (max-width: 480px) {
-  /* Phone */
-  #wp-content img,
-  #wp-content .attachment img {
-		max-width: 100%;
-		height: auto;
-	}
-
-	.nav-previous,
-	.nav-next {
-		float: none;
-		width: 100%;
-		text-align: left;
-		font-size: 90%;
-		margin: 0.25em 0;
-	}
-}
